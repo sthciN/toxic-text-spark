@@ -71,17 +71,17 @@ trained_lr = lr_model.transform(tfidf)
 print('trained_lr', trained_lr.select("id", "toxic", "probability", "prediction").show(10))
 print('trained_lr.show(5)', trained_lr.show(5))
 
-def probability_convert(p):
-    return float(p[1])
+probability_convert = F.udf(lambda x: float(x[1]), T.FloatType())
+
 
 print('proba>>>', trained_lr.withColumn("proba", probability_convert("probability")).select("proba", "prediction").show(5))
 
 # Test dataset
-test_tokens = tokenizer.transform(test_tt)
+test_tokens = tokenizer.transform(test_sdf)
 test_tf = hashing_term_frequency.transform(test_tokens)
 test_tfidf = tfidf_model.transform(test_tf)
 
-test_res = test_tt.select('id')
+test_res = test_sdf.select('id')
 test_res.head()
 
 
