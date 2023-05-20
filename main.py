@@ -88,7 +88,7 @@ test_res.head()
 test_probs = []
 for col in [i for i in train_tt.columns if i not in train_fields]:
     print(col)
-    lr = LogisticRegression(featuresCol="features", labelCol=col, regParam=0.01)
+    lr = LogisticRegression(featuresCol="token_tf", labelCol=col, regParam=0.01)
     lr_model = lr.fit(tfidf)
     transformed = lr_model.transform(test_tfidf)
     test_res = test_res.join(transformed.select('id', 'probability'), on="id")
